@@ -33,7 +33,7 @@ app.post('/api/notes', (req, res) => {
    const {title, text } = req.body;
    let newArr;
      
-   fs.readFile('db/db.json', function (err, data){
+   fs.readFile('db/db.json', (err, data) => {
     let arr = JSON.parse(data);
     let newNote ={ title, text, id: uuidv4()};
     newArr = [...arr, newNote];
