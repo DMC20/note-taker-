@@ -2,6 +2,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const { v4: uuidv4 } = require('uuid');
 
 // Express setup
 const app = express();
@@ -17,7 +18,7 @@ app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, '/public/notes.html'));
 });
 
-// Route to DB json file 
+// Route to db.json file 
 app.get('/api/notes', (req, res) => {
     res.sendFile(path.join(__dirname, '/db/db.json'))
 })
@@ -29,11 +30,18 @@ app.get('*', (req, res) => {
 
 // Post note
 app.post('/api/notes', (req, res) => {
-
+   const {title, text } = req.body;
+   let newArr;
+     
+   fs.readFile('db/db.json', function (err, data){
+    let arr = JSON.parse(data);
+    let newNote ={ title, text, id: uuidv4()};
+    newArr = [...arr, newNote];
+    
+    fs.writeFileSync('db/db.json', JSON.stringify(newArr))
+    });
+    res.json({ok:true})
 })
-
-
-
 
 // Delete note 
 app.delete('/api/notes/:id', (req, res) => {
