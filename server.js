@@ -30,12 +30,12 @@ app.get('*', (req, res) => {
 
 // Post note
 app.post('/api/notes', (req, res) => {
-   const {title, text } = req.body;
+   const {title, text} = req.body;
    let newArr;
      
    fs.readFile('db/db.json', (err, data) => {
     let arr = JSON.parse(data);
-    let newNote ={ title, text, id: uuidv4()};
+    let newNote = { title, text, id: uuidv4()};
     newArr = [...arr, newNote];
     
     fs.writeFileSync('db/db.json', JSON.stringify(newArr))
@@ -45,7 +45,15 @@ app.post('/api/notes', (req, res) => {
 
 // Delete note 
 app.delete('/api/notes/:id', (req, res) => {
+    const noteId = req.params.id
+    let noteArr = JSON.parse(fs.readFileSync("./db/db.json"));
 
+    noteArr = noteArr.filter(note => {
+        return note.id != noteId;
+    })
+
+    fs.writeFileSync("./db/db.json", JSON.stringify(noteArr));
+    res.json({ok:true});
 })
 
 // Listen to port
