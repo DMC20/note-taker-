@@ -8,22 +8,19 @@ const { v4: uuidv4 } = require('uuid');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Express middleware 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
 
-// Route to notes pages 
+// Route to notes pages/files 
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, '/public/notes.html'));
 });
 
-// Route to db.json file 
 app.get('/api/notes', (req, res) => {
     res.sendFile(path.join(__dirname, '/db/db.json'))
 })
 
-// Route to homepage
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '/public/index.html'));
 })
@@ -45,14 +42,14 @@ app.post('/api/notes', (req, res) => {
 
 // Delete note 
 app.delete('/api/notes/:id', (req, res) => {
-    const noteId = req.params.id
-    let noteArr = JSON.parse(fs.readFileSync("./db/db.json"));
+    const { id } = req.params;
+    let noteArr = JSON.parse(fs.readFileSync("db/db.json"));
 
     noteArr = noteArr.filter(note => {
-        return note.id != noteId;
+        return note.id != id;
     })
 
-    fs.writeFileSync("./db/db.json", JSON.stringify(noteArr));
+    fs.writeFileSync("db/db.json", JSON.stringify(noteArr));
     res.json({ok:true});
 })
 
