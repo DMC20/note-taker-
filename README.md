@@ -13,7 +13,7 @@ This application HTML, CSS, and Javascript for the Front End of the application.
 https://damp-ridge-43976.herokuapp.com/
 
 ## Credits 
-Lines 47 and 48 used from classmate, Ben Gallagher
+Lines 48 and 49 used from classmate, Ben Gallagher
 https://github.com/Bgallag5/11-Notetaker
 
 ## Questions 
